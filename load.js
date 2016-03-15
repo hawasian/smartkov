@@ -2,11 +2,8 @@ var fs = require('fs');
 
 var source = './source.txt';
 var array = fs.readFileSync(source).toString().toLowerCase().replace(/[^\w\s^’^']|_|\r\n/g, function ($1) { return ' ' + $1 + ' ';}).replace(/[ ]+/g, ' ').split(' ');
-var jsonOut = {};
-/*
-jsonOut["word1"] = {};
-jsonOut.word1.count = 1;
-*/
+var jsonOut = require('./dictionary.json');
+
 for(var i = 0; i<array.length; i++){
   var first = String(array[i]);
   var second = String(array[i+1]);

@@ -5,7 +5,8 @@
   "main": "\u001b[28~",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node load.js && node main.js"
+    "run": "node load.js && node main.js",
+    "reset":"node wipe.js && node load.js"
   },
   "keywords": [
     "Markov"
