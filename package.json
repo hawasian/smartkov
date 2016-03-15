@@ -1,0 +1,15 @@
+{
+  "name": "smartkov",
+  "version": "0.0.1",
+  "description": "Markov chain generator fo",
+  "main": "\u001b[28~",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node load.js && node main.js"
+  },
+  "keywords": [
+    "Markov"
+  ],
+  "author": "Connor Young",
+  "license": "MIT"
+}
