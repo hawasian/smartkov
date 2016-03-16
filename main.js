@@ -3,19 +3,42 @@ var writer = require('./write.js');
 var rl = require("readline");
 
 var prompts = rl.createInterface(process.stdin, process.stdout);
-function run(){
-  var txt = "How Many Words to Display? (Input 'EXIT' to terminate)";
+var text = "LOAD or WRITE: \n";
+var state = 0;
+function run(txt,state){
+  var nextstate = state;
   prompts.question(txt, function (input) {
-  var message = "";
-  if(isNaN(parseInt(input))){
-    message = "Not a Number";
-  }else{
-    message = writer.write('./dictionary.json','output.txt',input-1);
-  }
-  console.log();
-  console.log(message);
-  console.log();
-  if(input != "EXIT"){run();}else{process.exit();}
-});
+    var message = "";
+    input = input.toLowerCase();
+    switch(state){
+      case 0: //Main
+        if(input == 'load'){
+          nextstate = 1;
+          txt = "FUNCTIONALITY COMING SOON\n";
+        }else if(input == 'write'){
+          nextstate = 2;
+          txt = "How many words would you like to write? (RETURN to previous)\n";
+        }
+        break;
+      case 1:
+        nextstate = 0;
+        txt = "LOAD or WRITE: \n";
+        break;
+      case 2:
+        if(input == 'return'){
+          nextstate = 0;
+          txt = "LOAD or WRITE: \n";
+        }else if(isNaN(parseInt(input))){
+          message = "Not a Number";
+        }else{
+          message = "\n"+writer.write('./dictionary.json','output.txt',input-1)+"\n";
+        }
+        break;
+    }
+    state = nextstate;
+    console.log(message);
+    if(input!= "exit"){run(txt,nextstate);}else{process.exit();}
+  });
 }
-run();
+console.log("Welcome to Smartkov. Type exit at any time to terminate!")
+run(text, 0);
