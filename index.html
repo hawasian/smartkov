@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Smartkov</title>
+
+</head>
+<body>
+<p class="stats">To Start</p>
+<script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>
+<script>window.writer = require('./write.js');</script>
+<script src="./write.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#stats").html(writer.write('./dictionary.json',10));
+
+});
+</script>
+</body>
+</html>

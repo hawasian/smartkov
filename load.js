@@ -41,5 +41,5 @@ for(var i = 0; i<array.length; i++){
 
 fs.writeFile('dictionary.json', JSON.stringify(jsonOut, null, 4), function (err) {
    if (err) return console.log(err);
-   console.log('Dictionary Updated');
+   console.log('Dictionary Updated: '+source+" Added");
  });

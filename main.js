@@ -1,52 +1,21 @@
-var fs = require('fs');
-//Load JSON
-var jsonObj = require('./dictionary.json');
-var length = 100;
-var start = "so"; // zero word
-var output = [start];
-var lenfirst = jsonObj[start][0];
-var randfirst = Math.floor(Math.random() * (lenfirst))+1;
-var indexfirst = 0;
-while(randfirst > 0){
-  indexfirst ++;
-  randfirst -= jsonObj[start][indexfirst][0];
-}
-var first = jsonObj[start][indexfirst][1];
-output.push(first); // first word
+var writer = require('./write.js');
+// var x = (writer.write('./dictionary.json','output.txt',1000));
+var rl = require("readline");
 
-for(var i=1; i<length; i++){
-  first = jsonObj[start][indexfirst][1];
-  var lensecond = jsonObj[start][indexfirst][0];
-  var randsecond = Math.floor(Math.random() * (lensecond))+1;
-  var indexsecond = 1;
-  while(randsecond > 0){
-    indexsecond ++;
-    randsecond -= jsonObj[start][indexfirst][indexsecond][0];
+var prompts = rl.createInterface(process.stdin, process.stdout);
+function run(){
+  var txt = "How Many Words to Display? (Input 'EXIT' to terminate)";
+  prompts.question(txt, function (input) {
+  var message = "";
+  if(isNaN(parseInt(input))){
+    message = "Not a Number";
+  }else{
+    message = writer.write('./dictionary.json','output.txt',input-1);
   }
-  var second = jsonObj[start][indexfirst][indexsecond][1];
-  output.push(second); //second word
-
-  for(var j = 1; j < jsonObj[first].length;j++){
-    if(jsonObj[first][j][1] == second){
-      indexfirst = j;
-      break;
-    }
-  }
-  start = first;
-}
-output = output.join(" ");
-//output = JSON.stringify(output, null, 4);
-fs.writeFile('output.txt', output, function (err) {
-  if (err) return console.log(err);
-  console.log(length+' words written to output.txt');
+  console.log();
+  console.log(message);
+  console.log();
+  if(input != "EXIT"){run();}else{process.exit();}
 });
-
-function objLength(obj){
-  var i=0;
-  for (var x in obj){
-    if(obj.hasOwnProperty(x)){
-      i++;
-    }
-  }
-  return i;
 }
+run();
