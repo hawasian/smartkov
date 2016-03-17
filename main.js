@@ -8,6 +8,13 @@ var sources = [];
 var s = 0;
 fs.readdirSync('./sources').forEach(function(file) {
   sources.push(s+": "+String(file));
+  s++;
+});
+var seeds = [];
+var sd = 0;
+fs.readdirSync('./seeds').forEach(function(file) {
+  seeds.push(sd+": "+String(file));
+  sd++;
 });
 var texts = loadText();
 var prompts = rl.createInterface(process.stdin, process.stdout);
@@ -34,6 +41,7 @@ function run(state){
           nextstate = 1;
         }else if(!isNaN(parseInt(input))){
           nextstate = 3;
+          source = sources[input].split(" ")[1];
         }
         break;
       case 2: //write
@@ -42,27 +50,38 @@ function run(state){
         }else if(isNaN(parseInt(input))){
           message = "Not a Number";
         }else{
-          message = "\n"+writer.write('./sources/dictionary.json','output.txt',input-1)+"\n";
+          message = "\n"+writer.write('./sources/'+source,'output.txt',input-1)+"\n";
         }
         break;
       case 3: //load or wipe
         if(input == 'return'){
           nextstate = 1;
         }else if(input == 'load'){
-          nextstate = 0;
-          loader.load();
+          nextstate = 5;
         }else if(input == 'wipe'){
           nextstate = 0;
-          wiper.wipe();
+          wiper.wipe('./sources/'+source);
         }
         break;
       case 4: // manage
         if(input == 'return'){
-          nextstate = 2;
+          nextstate = 0;
         }else if(input > sources.length-1){
           nextstate = 4;
         }else{
+          source = sources[input].split(" ")[1];
           nextstate = 2;
+        }
+        break;
+      case 5:
+        if(input == 'return'){
+          nextstate = 3;
+        }else if(input > seeds.length-1 || isNaN(parseInt(input)) ){
+          nextstate = 5;
+        }else{
+          nextstate = 0;
+          seed = seeds[input].split(" ")[1];
+          loader.load('./sources/'+source,'./seeds/'+seed);
         }
         break;
     }
@@ -82,6 +101,7 @@ function loadText(){
     "Select a source #"+ret+sources.join("\n"),
     "How many words would you like to write?"+"\n",
     "LOAD or WIPE: "+ret,
-    "Select a source #"+ret+sources.join("\n")+"\n"
+    "Select a source #"+ret+sources.join("\n")+"\n",
+    "Select a seed #"+ret+seeds.join("\n")+"\n"
   ];
 }

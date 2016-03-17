@@ -1,11 +1,11 @@
 module.exports = {
-  load: function load() {
+  load: function load(dict,seed) {
 var fs = require('fs');
 
-var source = './source.txt';
+var source = seed;
 var array = fs.readFileSync(source).toString().toLowerCase().replace(/[^\w\s^’^']|_|\r\n/g, function ($1) { return ' ' + $1 + ' ';}).replace(/[ ]+/g, ' ').split(' ');
-var jsonOut = require('./sources/dictionary.json');
-
+var jsonOut = require(dict);
+console.log(dict);
 for(var i = 0; i<array.length; i++){
   var first = String(array[i]);
   var second = String(array[i+1]);
@@ -41,9 +41,9 @@ for(var i = 0; i<array.length; i++){
   }
 }
 
-fs.writeFile('./sources/dictionary.json', JSON.stringify(jsonOut, null, 4), function (err) {
+fs.writeFile(dict, JSON.stringify(jsonOut, null, 4), function (err) {
    if (err) return console.log(err);
-   console.log('Dictionary Updated: '+source+" Added");
+   //console.log('Dictionary Updated: '+source+" Added");
  });
  }
  };
