@@ -27,8 +27,13 @@ module.exports = {
       var indexsecond = 1;
       while (randsecond > 0) {
         indexsecond++;
+        if(!jsonObj[start][indexfirst][indexsecond]){
+          error = true;
+          break;
+        }
         randsecond -= jsonObj[start][indexfirst][indexsecond][0];
       }
+      if(error){break;}
       var second = jsonObj[start][indexfirst][indexsecond][1];
       output.push(second); //second word
       if(!jsonObj[first]){
@@ -36,6 +41,10 @@ module.exports = {
         break;
       }
       for (var j = 1; j < jsonObj[first].length; j++) {
+        if(!jsonObj[first][j]){
+          error = true;
+          break;
+        }
         if (jsonObj[first][j][1] == second) {
           indexfirst = j;
           break;
